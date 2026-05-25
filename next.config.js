@@ -17,11 +17,7 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "10mb",
-    },
-  },
+  serverExternalPackages: ["@supabase/supabase-js"],
 };
 
 module.exports = nextConfig;
