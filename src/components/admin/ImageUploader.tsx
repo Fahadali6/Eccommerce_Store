@@ -3,8 +3,8 @@
 import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import {
-  Upload, X, Star, StarOff, Trash2, ImagePlus,
-  AlertCircle, CheckCircle, Loader2, GripVertical,
+  Upload, X, Star, Trash2, ImagePlus,
+  AlertCircle, CheckCircle, Loader2,
 } from "lucide-react";
 import { validateImageFile, fileToDataUrl, cn } from "@/lib/utils";
 import { uploadProductImage, deleteProductImage } from "@/lib/imageStorage";

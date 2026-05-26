@@ -5,7 +5,6 @@ import { SlidersHorizontal, RotateCcw } from "lucide-react";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { PRODUCTS } from "@/lib/data";
 import { getLocalProductImages } from "@/lib/imageStorage";
-import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 
 type SortKey = "featured"|"price-asc"|"price-desc"|"rating"|"trending"|"newest";

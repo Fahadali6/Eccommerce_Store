@@ -1,23 +1,18 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ArrowRight, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { HeroSlider } from "@/components/ui/HeroSlider";
 import { useStore } from "@/context/store";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS } from "@/lib/data";
 import { getRecommendations } from "@/lib/aiEngine";
-import { getProductImageUrl } from "@/lib/utils";
 import { getLocalProductImages } from "@/lib/imageStorage";
 import type { Product } from "@/types";
 
 export function HomeClient() {
-  const [mounted, setMounted]           = useState(false);
   const [enriched, setEnriched]         = useState<Product[]>([]);
   const recentlyViewed                  = useStore(s => s.recentlyViewed);
-
-  useEffect(() => { setTimeout(() => setMounted(true), 80); }, []);
 
   // Load locally-stored images for all products (dev mode)
   useEffect(() => {
@@ -37,9 +32,7 @@ export function HomeClient() {
 
   const trending      = products.filter(p => p.trending).slice(0, 4);
   const isPersonalized = recentlyViewed.length > 0;
-  const heroProduct   = products.find(p => p.slug === "summit-ridge-backpack") ?? products[4];
-  const heroImgSrc    = getProductImageUrl(heroProduct, 0, 800, 960);
-  const heroIsBase64  = heroImgSrc.startsWith("data:");
+  
 
   return (
     <div className="min-h-screen">
