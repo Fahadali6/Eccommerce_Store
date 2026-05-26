@@ -69,13 +69,13 @@ export default function CartPage() {
 
         <div className="grid grid-cols-[1fr_360px] gap-8">
           {/* Items */}
-          <div className="card-flat section-white rounded-2xl overflow-hidden divide-y"
-            style={{ divideColor:"var(--border)" }}>
+          <div className="card-flat section-white rounded-2xl overflow-hidden"
+               style={{ border:"1px solid var(--border)" }}>
             {displayCart.map(item => {
               const imgSrc   = getProductImageUrl(item, 0, 200, 200);
               const isBase64 = imgSrc.startsWith("data:");
               return (
-                <div key={item.id} className="flex gap-5 p-6">
+                <div key={item.id} className="flex gap-5 p-6" style={{ borderBottom:"1px solid var(--border)" }}>
                   <div className="relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0"
                     style={{ background:"var(--bg-subtle)" }}>
                     <Image

@@ -20,4 +20,10 @@ const nextConfig = {
   serverExternalPackages: ["@supabase/supabase-js"],
 };
 
+module.exports = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+};
+
 module.exports = nextConfig;

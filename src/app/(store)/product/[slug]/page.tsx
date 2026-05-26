@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import { PRODUCTS } from "@/lib/data";
 import { ProductDetailClient } from "./ProductDetailClient";
 
-interface Props { params: { slug: string } }
-
-export function generateStaticParams() {
-  return PRODUCTS.map(p => ({ slug: p.slug }));
+interface Props { params: Promise<{ slug: string }> }
+export default async function ProductPage({ params }: Props) {
+  const { slug } = await params;
+  const product = PRODUCTS.find(p => p.slug === slug);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

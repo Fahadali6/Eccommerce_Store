@@ -103,7 +103,7 @@ export function HeroSlider() {
 
         let transform = "translateX(0)";
         let opacity   = 1;
-        let zIndex    = isActive ? 2 : 1;
+        const zIndex    = isActive ? 2 : 1;
 
         if (isActive && animating) {
           transform = "translateX(0)";
