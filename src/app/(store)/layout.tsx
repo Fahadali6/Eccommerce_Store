@@ -1,4 +1,5 @@
 import { Navbar } from "@/components/layout/Navbar";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Footer } from "@/components/layout/Footer";
 import { Toaster } from "react-hot-toast";
 
@@ -8,6 +9,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       <Navbar />
       <main>{children}</main>
       <Footer />
+      <ChatWidget />
       <Toaster
         position="bottom-right"
         toastOptions={{
