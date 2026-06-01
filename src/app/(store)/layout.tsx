@@ -1,28 +1,29 @@
 import { Navbar } from "@/components/layout/Navbar";
-import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Footer } from "@/components/layout/Footer";
+import { ChatWidget } from "@/components/chat/ChatWidget";
 import { Toaster } from "react-hot-toast";
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main className="pt-[68px]">{children}</main>
       <Footer />
       <ChatWidget />
       <Toaster
         position="bottom-right"
         toastOptions={{
           style: {
-            background: "#fff",
-            color: "#1A1917",
-            border: "1px solid #E5E4DF",
-            borderRadius: "12px",
+            background: "var(--bg-white)",
+            color: "var(--text)",
+            border: "1px solid var(--border)",
+            borderRadius: "14px",
             fontSize: "14px",
-            boxShadow: "0 8px 30px rgba(0,0,0,0.1)",
+            boxShadow: "var(--shadow-lg)",
+            padding: "12px 16px",
           },
-          success: { iconTheme: { primary:"#B8860B", secondary:"#fff" } },
-          error:   { iconTheme: { primary:"#DC2626", secondary:"#fff" } },
+          success: { iconTheme: { primary: "#B8860B", secondary: "#fff" } },
+          error:   { iconTheme: { primary: "#DC2626", secondary: "#fff" } },
         }}
       />
     </>

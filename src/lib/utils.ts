@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import type { Product } from "@/types";
+import { getDefaultBagImageUrl } from "@/lib/productImages";
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
@@ -21,24 +22,22 @@ export function generateImageId(): string {
 }
 
 /**
- * Returns the primary display URL for a product.
- * Priority: 1) uploaded images  2) picsum fallback
+ * Returns the display URL for a product image.
+ * Priority: 1) catalog/uploaded images  2) Unsplash bag catalog by slug
  */
 export function getProductImageUrl(product: Product, index = 0, w = 600, h = 600): string {
   const uploaded = product.images ?? [];
   if (uploaded.length > 0) {
-    const img = uploaded[index] ?? uploaded[0];
+    const sorted = [...uploaded].sort((a, b) => a.order - b.order);
+    const img = sorted[index] ?? sorted[0];
     return img.url;
   }
-  // Fallback to picsum with stable seed
-  return `https://picsum.photos/seed/vaulta${product.imageId}/${w}/${h}`;
+  return getDefaultBagImageUrl(product.slug, index, w, h);
 }
 
-/**
- * Picsum fallback only (used when no product available)
- */
-export function productImageUrl(imageId: number, w = 600, h = 600): string {
-  return `https://picsum.photos/seed/vaulta${imageId}/${w}/${h}`;
+/** Bag image fallback by product slug */
+export function productImageUrl(slug: string, index = 0, w = 600, h = 600): string {
+  return getDefaultBagImageUrl(slug, index, w, h);
 }
 
 /**

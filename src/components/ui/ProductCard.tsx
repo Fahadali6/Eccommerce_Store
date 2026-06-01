@@ -2,121 +2,245 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Heart, ShoppingBag, Star, Eye, Zap } from "lucide-react";
 import { useStore } from "@/context/store";
 import { cn, formatPrice, getProductImageUrl } from "@/lib/utils";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
 
-export function ProductCard({ product, compact = false }: { product: Product; compact?: boolean }) {
-  const [hovered, setHovered] = useState(false);
+interface Props {
+  product:  Product;
+  compact?: boolean;
+  priority?: boolean;
+}
+
+export function ProductCard({ product, compact = false, priority = false }: Props) {
+  const [hovered,  setHovered]  = useState(false);
+  const [imgError, setImgError] = useState(false);
+  const [adding,   setAdding]   = useState(false);
+
   const addToCart           = useStore(s => s.addToCart);
   const toggleWishlist      = useStore(s => s.toggleWishlist);
   const isWishlisted        = useStore(s => s.isWishlisted(product.id));
   const addToRecentlyViewed = useStore(s => s.addToRecentlyViewed);
 
-  const imgSrc = getProductImageUrl(product, 0, 600, 600);
+  const imgSrc   = imgError
+    ? `https://picsum.photos/seed/vaulta${product.imageId}/600/600`
+    : getProductImageUrl(product, 0, 600, 600);
   const isBase64 = imgSrc.startsWith("data:");
 
-  function handleAdd(e: React.MouseEvent) {
-    e.preventDefault(); e.stopPropagation();
+  const discount = product.originalPrice
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : 0;
+
+  async function handleAdd(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (adding) return;
+    setAdding(true);
     addToCart(product, 1);
-    toast.success(`${product.name} added to cart`, { icon: "🛍️" });
+    toast.success(`${product.name} added!`, {
+      icon: "🛍️",
+      style: {
+        background: "var(--bg-white)",
+        color: "var(--text)",
+        border: "1px solid var(--border)",
+        borderRadius: "12px",
+      },
+    });
+    setTimeout(() => setAdding(false), 1200);
   }
+
   function handleWish(e: React.MouseEvent) {
-    e.preventDefault(); e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
     toggleWishlist(product.id);
-    toast(isWishlisted ? "Removed from wishlist" : "Saved to wishlist", {
-      icon: isWishlisted ? "💔" : "♥",
+    toast(isWishlisted ? "Removed from wishlist" : "Added to wishlist", {
+      icon: isWishlisted ? "💔" : "❤️",
     });
   }
 
   return (
     <div
+      className="product-card group"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="card rounded-2xl overflow-hidden group"
-      style={{ transform: hovered ? "translateY(-4px)" : "translateY(0)", cursor: "pointer" }}
     >
-      {/* Image */}
+      {/* ── Image container ── */}
       <Link
         href={`/product/${product.slug}`}
         onClick={() => addToRecentlyViewed(product)}
-        className={cn("block relative overflow-hidden", compact ? "h-44" : "h-60")}
+        className={cn("card-img block relative", compact ? "h-48" : "h-64")}
         style={{ background: "var(--bg-subtle)" }}
       >
+        {/* Product image */}
         <Image
           src={imgSrc}
           alt={product.name}
           fill
-          className={cn("object-cover transition-transform duration-500", hovered && "scale-105")}
-          sizes="(max-width:768px) 100vw, 33vw"
+          className="object-cover"
+          sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
           unoptimized={isBase64}
+          onError={() => setImgError(true)}
         />
-        <div className={cn(
-          "absolute inset-0 bg-black/10 transition-opacity duration-300",
-          hovered ? "opacity-100" : "opacity-0"
-        )} />
 
-        {/* Badges */}
-        {product.stock < 10 && (
-          <span className="badge badge-red absolute top-3 left-3 z-10">Only {product.stock} left</span>
-        )}
-        {product.trending && (
-          <span className="badge badge-amber absolute top-3 right-10 z-10">Trending</span>
-        )}
-        {product.originalPrice && (
-          <span className="absolute top-3 right-3 text-[10px] font-bold px-2 py-0.5 rounded-full z-10"
-            style={{ background: "#16A34A", color: "#fff" }}>
-            -{Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}%
-          </span>
-        )}
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0 transition-opacity duration-300"
+          style={{
+            background: "linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 50%)",
+            opacity: hovered ? 1 : 0,
+          }}
+        />
 
-        {/* Wishlist */}
-        <button onClick={handleWish}
-          className={cn(
-            "absolute top-2.5 right-2.5 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 shadow-sm",
-            isWishlisted ? "bg-red-50 border border-red-200" : "bg-white/90 border border-white/60 hover:bg-white"
-          )}>
-          <Heart size={13} className={isWishlisted ? "fill-red-500 text-red-500" : "text-gray-400"} />
-        </button>
+        {/* ── Badges top-left ── */}
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
+          {discount > 0 && (
+            <span className="badge badge-red">-{discount}%</span>
+          )}
+          {product.trending && (
+            <span className="badge badge-amber flex items-center gap-1">
+              <Zap size={9} className="fill-current" />Trending
+            </span>
+          )}
+          {product.stock < 5 && product.stock > 0 && (
+            <span className="badge badge-red">Only {product.stock} left</span>
+          )}
+          {product.stock === 0 && (
+            <span className="badge badge-gray">Sold Out</span>
+          )}
+        </div>
+
+        {/* ── Action buttons top-right ── */}
+        <div className="absolute top-3 right-3 flex flex-col gap-2 z-10">
+          {/* Wishlist */}
+          <button
+            onClick={handleWish}
+            className="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm"
+            style={{
+              background: isWishlisted ? "#FEE2E2" : "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(8px)",
+              border: isWishlisted ? "1px solid #FECACA" : "1px solid rgba(255,255,255,0.5)",
+              transform: hovered ? "translateX(0) scale(1)" : "translateX(8px) scale(0.9)",
+              opacity: hovered ? 1 : 0,
+              transitionDelay: "0ms",
+            }}
+            title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart size={14} className={isWishlisted ? "fill-red-500 text-red-500" : "text-gray-600"} />
+          </button>
+
+          {/* Quick view */}
+          <Link
+            href={`/product/${product.slug}`}
+            onClick={e => e.stopPropagation()}
+            className="w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-200 shadow-sm"
+            style={{
+              background: "rgba(255,255,255,0.9)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.5)",
+              transform: hovered ? "translateX(0) scale(1)" : "translateX(8px) scale(0.9)",
+              opacity: hovered ? 1 : 0,
+              transitionDelay: "60ms",
+            }}
+            title="Quick view"
+          >
+            <Eye size={14} className="text-gray-600" />
+          </Link>
+        </div>
+
+        {/* ── Quick add to cart (bottom overlay) ── */}
+        <div
+          className="absolute inset-x-0 bottom-0 px-3 pb-3 z-10 transition-all duration-300"
+          style={{
+            transform: hovered ? "translateY(0)" : "translateY(100%)",
+            opacity: hovered ? 1 : 0,
+          }}
+        >
+          <button
+            onClick={handleAdd}
+            disabled={adding || product.stock === 0}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-bold transition-all duration-200"
+            style={{
+              background: adding ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.92)",
+              color: "var(--text)",
+              backdropFilter: "blur(12px)",
+              boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+            }}
+          >
+            {adding ? (
+              <><span className="spin inline-block w-4 h-4 border-2 border-gray-300 border-t-gray-800 rounded-full" />Adding...</>
+            ) : product.stock === 0 ? (
+              "Out of Stock"
+            ) : (
+              <><ShoppingBag size={15} />Quick Add — {formatPrice(product.price)}</>
+            )}
+          </button>
+        </div>
       </Link>
 
-      {/* Info */}
-      <div className={cn("p-4 section-white", compact && "p-3")}>
-        <Link href={`/product/${product.slug}`} onClick={() => addToRecentlyViewed(product)}>
-          <p className="label mb-1" style={{ fontSize: "10px" }}>{product.category}</p>
-          <h3 className={cn("font-bold font-serif leading-tight mb-2", compact ? "text-sm" : "text-[15px]")}
-            style={{ color: "var(--text)" }}>
+      {/* ── Product info ── */}
+      <div className={cn("p-4", compact && "p-3")} style={{ background: "var(--bg-card)" }}>
+
+        {/* Category + Rating row */}
+        <div className="flex items-center justify-between mb-2">
+          <span className="label" style={{ fontSize: "10px" }}>{product.category}</span>
+          <div className="flex items-center gap-1">
+            <div className="flex">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} size={10}
+                  className={i < Math.floor(product.rating)
+                    ? "fill-amber-400 text-amber-400"
+                    : "fill-gray-200 text-gray-200 dark:fill-gray-700 dark:text-gray-700"
+                  }
+                />
+              ))}
+            </div>
+            <span className="text-[10px] font-medium" style={{ color: "var(--text-muted)" }}>
+              ({product.reviewCount})
+            </span>
+          </div>
+        </div>
+
+        {/* Product name */}
+        <Link href={`/product/${product.slug}`}
+          onClick={() => addToRecentlyViewed(product)}>
+          <h3
+            className={cn(
+              "font-bold font-serif leading-tight mb-1.5 transition-colors duration-200",
+              compact ? "text-sm" : "text-[15px]",
+              hovered ? "text-gold-c" : ""
+            )}
+            style={{ color: hovered ? "var(--gold)" : "var(--text)" }}
+          >
             {product.name}
           </h3>
         </Link>
 
-        <div className="flex items-center gap-1.5 mb-3">
-          <div className="flex gap-0.5">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star key={i} size={11}
-                className={i < Math.floor(product.rating)
-                  ? "fill-amber-400 text-amber-400"
-                  : "text-gray-200 fill-gray-200"} />
-            ))}
-          </div>
-          <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
-            {product.rating} ({product.reviewCount})
-          </span>
-        </div>
+        {/* Material */}
+        {!compact && (
+          <p className="text-xs mb-3" style={{ color: "var(--text-muted)" }}>
+            {product.material} · {product.color}
+          </p>
+        )}
 
+        {/* Tags */}
         {!compact && (
           <div className="flex flex-wrap gap-1 mb-3">
             {product.tags.slice(0, 3).map(tag => (
-              <span key={tag} className="badge badge-gray text-[10px]">{tag}</span>
+              <span key={tag} className="badge badge-gray" style={{ fontSize: "10px" }}>{tag}</span>
             ))}
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-baseline gap-1.5">
-            <span className={cn("font-bold", compact ? "text-base" : "text-lg")} style={{ color: "var(--text)" }}>
+        {/* Price row */}
+        <div className="flex items-center justify-between pt-1"
+          style={{ borderTop: "1px solid var(--border)" }}>
+          <div className="flex items-baseline gap-2">
+            <span className={cn("font-black", compact ? "text-base" : "text-lg")}
+              style={{ color: "var(--text)", fontFamily: "'Playfair Display',serif" }}>
               {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
@@ -125,12 +249,18 @@ export function ProductCard({ product, compact = false }: { product: Product; co
               </span>
             )}
           </div>
-          <button onClick={handleAdd}
-            className={cn(
-              "flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-250",
-              hovered ? "btn-gold" : "btn-ghost border"
-            )}
-            style={hovered ? {} : { borderColor: "var(--border-dark)" }}>
+
+          {/* Add button (visible always on mobile, on hover on desktop) */}
+          <button
+            onClick={handleAdd}
+            disabled={adding || product.stock === 0}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-200"
+            style={{
+              background: hovered ? "var(--gold)" : "var(--gold-pale)",
+              color: hovered ? "#fff" : "var(--gold)",
+              boxShadow: hovered ? "var(--shadow-gold)" : "none",
+            }}
+          >
             <ShoppingBag size={12} />
             {!compact && "Add"}
           </button>

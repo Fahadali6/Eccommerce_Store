@@ -89,8 +89,8 @@ export function HeroSlider() {
 
   return (
     <section
-      className="relative w-full overflow-hidden hero-slider-section"
-      style={{ height:"100vh", minHeight:"680px" }}
+      className="relative w-full overflow-hidden hero-slider-section -mt-[var(--nav-height)]"
+      style={{ height:"100vh", minHeight:"680px", paddingTop:"var(--nav-height)" }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
