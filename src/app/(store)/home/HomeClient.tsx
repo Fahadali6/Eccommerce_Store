@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   ArrowRight, Shield, Truck, RotateCcw, Star,
@@ -11,7 +10,6 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { HeroSlider } from "@/components/ui/HeroSlider";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS } from "@/lib/data";
 import { getRecommendations } from "@/lib/aiEngine";
-import { getProductImageUrl } from "@/lib/utils";
 import { getLocalProductImages } from "@/lib/imageStorage";
 import type { Product } from "@/types";
 
@@ -172,7 +170,7 @@ export function HomeClient() {
             <p>Discover our curated collections crafted for every lifestyle</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {CATEGORIES.map((cat, i) => (
+            {CATEGORIES.map(cat => (
               <Link key={cat.id} href={`/shop?cat=${cat.name}`}
                 className="group relative overflow-hidden rounded-3xl transition-all duration-350"
                 style={{
@@ -284,7 +282,7 @@ export function HomeClient() {
               <p className="label mb-3">Why VAULTA</p>
               <h2 className="text-4xl font-black font-serif mb-6">Built Different.<br /><span style={{ color: "var(--gold)" }}>Built to Last.</span></h2>
               <p className="text-lg leading-relaxed mb-10" style={{ color: "var(--text-sec)" }}>
-                Every VAULTA bag is the result of obsessive craftsmanship, premium materials, and decades of design experience. We don't cut corners — ever.
+                Every VAULTA bag is the result of obsessive craftsmanship, premium materials, and decades of design experience. We do not cut corners — ever.
               </p>
               <div className="space-y-5">
                 {[

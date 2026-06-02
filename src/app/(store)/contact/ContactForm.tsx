@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Send, User, Mail, MessageSquare } from "lucide-react";
+import { Send, User, Mail } from "lucide-react";
 import toast from "react-hot-toast";
 
 export function ContactForm() {
@@ -30,7 +30,7 @@ export function ContactForm() {
         </div>
         <h3 className="text-2xl font-bold font-serif mb-3" style={{ color:"var(--text)" }}>Message Sent!</h3>
         <p className="text-sm" style={{ color:"var(--text-sec)" }}>
-          Thanks for reaching out. We'll get back to you within 24 hours.
+          Thanks for reaching out. We will get back to you within 24 hours.
         </p>
         <button onClick={() => setSent(false)} className="btn-outline btn-sm mt-6">Send Another</button>
       </div>

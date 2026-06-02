@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ShoppingBag, Heart, Search, Menu, X,
@@ -8,7 +9,7 @@ import {
 } from "lucide-react";
 import { useStore } from "@/context/store";
 import { smartSearch } from "@/lib/aiEngine";
-import { cn } from "@/lib/utils";
+import { cn, getProductImageUrl } from "@/lib/utils";
 import type { Product } from "@/types";
 
 const NAV_LINKS = [
@@ -195,7 +196,7 @@ export function Navbar() {
                     style={{ boxShadow:"var(--shadow-xl)", animation:"fadeUp 0.2s ease both" }}>
                     <div className="px-4 py-2.5 border-b" style={{ borderColor:"var(--border)" }}>
                       <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color:"var(--text-muted)" }}>
-                        {results.length} results for "{query}"
+                        {results.length} results for &quot;{query}&quot;
                       </p>
                     </div>
                     {results.map(p => (
@@ -206,9 +207,17 @@ export function Navbar() {
                         onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)"}
                         onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={`https://picsum.photos/seed/vaulta${p.imageId}/48/48`} alt={p.name}
-                          className="w-11 h-11 rounded-xl object-cover flex-shrink-0" loading="lazy" />
+                        <div className="relative w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"
+                          style={{ background: "var(--bg-muted)" }}>
+                          <Image
+                            src={getProductImageUrl(p, 0, 96, 96)}
+                            alt={p.name}
+                            fill
+                            className="object-cover"
+                            sizes="44px"
+                            unoptimized={getProductImageUrl(p, 0, 96, 96).startsWith("data:")}
+                          />
+                        </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-semibold truncate" style={{ color:"var(--text)" }}>{p.name}</p>
                           <div className="flex items-center gap-2">
@@ -222,7 +231,7 @@ export function Navbar() {
                       onClick={() => { setSearchOpen(false); setQuery(""); }}
                       className="flex items-center justify-center gap-2 px-4 py-3 text-xs font-semibold transition-colors"
                       style={{ color:"var(--gold)", background:"var(--gold-pale)" }}>
-                      View all results for "{query}" →
+                      View all results for &quot;{query}&quot; →
                     </Link>
                   </div>
                 )}

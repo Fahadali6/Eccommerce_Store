@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { SlidersHorizontal, RotateCcw, Grid3X3, List, Search } from "lucide-react";
+import { SlidersHorizontal, RotateCcw, Grid3X3, List } from "lucide-react";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { PRODUCTS } from "@/lib/data";
 import { getLocalProductImages } from "@/lib/imageStorage";

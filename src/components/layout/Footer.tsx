@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { Facebook, Instagram, Linkedin, Twitter, Youtube, Mail, Phone, MapPin, Shield, Truck, RotateCcw, Award, ArrowRight, Send } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube, Mail, Phone, MapPin, Shield, Truck, RotateCcw, Award, Send } from "lucide-react";
 
 const LINKS = {
   Shop: [
@@ -95,14 +95,14 @@ export function Footer() {
             <Link href="/home" className="flex items-center gap-3 mb-5 group">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
                 style={{ background: "var(--text)" }}>
-                <span className="text-white font-black text-xl" style={{ fontFamily: "'Playfair Display',serif" }}>V</span>
+                <span className="text-white font-black text-xl" style={{ fontFamily: "Playfair Display,serif" }}>V</span>
               </div>
               <span className="font-black text-2xl tracking-[2px]"
-                style={{ fontFamily: "'Playfair Display',serif", color: "var(--text)" }}>VAULTA</span>
+                style={{ fontFamily: "Playfair Display,serif", color: "var(--text)" }}>VAULTA</span>
             </Link>
 
             <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--text-sec)", maxWidth: "300px" }}>
-              Premium bags engineered for extraordinary lives. Crafted from the world's finest materials with a lifetime warranty on every product.
+              Premium bags engineered for extraordinary lives. Crafted from the worlds finest materials with a lifetime warranty on every product.
             </p>
 
             {/* Contact info */}
@@ -156,8 +156,8 @@ export function Footer() {
             <div key={title}>
               <p className="label mb-5">{title}</p>
               <ul className="space-y-3">
-                {links.map(l => (
-                  <li key={l.href}>
+                {links.map((l, i) => (
+                  <li key={l.href + i}>
                     <Link href={l.href}
                       className="text-sm flex items-center gap-1.5 group transition-all duration-200"
                       style={{ color: "var(--text-sec)" }}
@@ -184,7 +184,7 @@ export function Footer() {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <p className="label mb-2" style={{ color: "rgba(212,160,23,0.8)" }}>Newsletter</p>
-              <h3 className="text-2xl font-bold mb-2" style={{ color: "#fff", fontFamily:"'Playfair Display',serif" }}>
+              <h3 className="text-2xl font-bold mb-2" style={{ color: "#fff", fontFamily:"Playfair Display,serif" }}>
                 Join the VAULTA Community
               </h3>
               <p className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>
@@ -197,7 +197,7 @@ export function Footer() {
                   style={{ background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)" }}>
                   <span className="text-green-400 text-xl">✓</span>
                   <div>
-                    <p className="text-sm font-semibold text-white">You're subscribed!</p>
+                    <p className="text-sm font-semibold text-white">Youre subscribed!</p>
                     <p className="text-xs" style={{ color: "rgba(255,255,255,0.5)" }}>Welcome to the VAULTA family.</p>
                   </div>
                 </div>

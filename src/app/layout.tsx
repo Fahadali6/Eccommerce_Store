@@ -34,7 +34,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
-      <body className="antialiased bg-page text-primary">{children}</body>
+      <body className="antialiased bg-page text-primary" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

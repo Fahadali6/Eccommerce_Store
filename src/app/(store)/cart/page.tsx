@@ -84,7 +84,7 @@ export default function CartPage() {
 
           {/* Items */}
           <div className="space-y-4">
-            {displayCart.map((item, idx) => {
+            {displayCart.map(item => {
               const imgSrc   = getProductImageUrl(item, 0, 200, 200);
               const isBase64 = imgSrc.startsWith("data:");
               return (

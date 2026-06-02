@@ -3,14 +3,13 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Heart, ShoppingBag, Shield, RotateCcw, Package,
-  Star, Minus, Plus, ChevronRight, Share2, Truck,
-  Award, Check, ZoomIn,
+  Heart, ShoppingBag, Shield, RotateCcw,
+  Star, Minus, Plus, ChevronRight, Share2, Truck, Check, ZoomIn,
 } from "lucide-react";
 import { useStore } from "@/context/store";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { getRecommendations } from "@/lib/aiEngine";
-import { formatPrice, getProductImageUrl, cn } from "@/lib/utils";
+import { formatPrice, getProductImageUrl } from "@/lib/utils";
 import { getLocalProductImages } from "@/lib/imageStorage";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";

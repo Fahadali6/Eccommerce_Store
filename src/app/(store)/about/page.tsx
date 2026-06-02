@@ -28,7 +28,7 @@ export default function AboutPage() {
           </h1>
           <p className="text-xl leading-relaxed" style={{ color:"var(--text-sec)" }}>
             VAULTA was founded in 2019 by three designers tired of choosing between style and function.
-            We built the bags we couldn't find anywhere else — and never stopped.
+            We built the bags we could not find anywhere else — and never stopped.
           </p>
         </div>
       </section>

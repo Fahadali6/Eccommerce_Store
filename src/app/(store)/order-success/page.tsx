@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle, Package, Mail, ArrowRight, Home, Star } from "lucide-react";
+import { CheckCircle, Package, Mail, ArrowRight, Home } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 
 interface LastOrder {
