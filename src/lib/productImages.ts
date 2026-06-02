@@ -4,94 +4,83 @@ import type { ProductImage } from "@/types";
  * Curated Unsplash bag/backpack photos (free to use via Unsplash CDN).
  * Each product slug maps to 3–4 gallery images.
  */
-const BAG_PHOTOS: Record<string, readonly string[]> = {
-  "obsidian-transit-pro": [
+const POOLS = {
+  travel: [
+    // backpacks / travel bags
     "photo-1553062407-98eeb64c6a62",
     "photo-1547949003-979cc4e533c6",
-    "photo-1578662996442-48f60103fc96",
     "photo-1491637639811-60e2756cc1c7",
-  ],
-  "atlas-weekender": [
-    "photo-1548036328-c9fa89d128fa",
-    "photo-1491637639811-60e2756cc1c7",
-    "photo-1553062407-98eeb64c6a62",
     "photo-1578662996442-48f60103fc96",
-  ],
-  "neural-laptop-folio": [
+  ] as const,
+  office: [
+    // briefcase / commuter / laptop vibe
     "photo-1627123424574-10b995aabc35",
-    "photo-1553062407-98eeb64c6a62",
     "photo-1590874101-5c2440707502",
-    "photo-1548036328-c9fa89d128fa",
-  ],
-  "meridian-tote": [
+    "photo-1553062407-98eeb64c6a62",
+    "photo-1491637639811-60e2756cc1c7",
+  ] as const,
+  fashion: [
+    // tote / purse / lifestyle
     "photo-1594633312681-425c7b97ccd1",
     "photo-1590874101-5c2440707502",
     "photo-1548036328-c9fa89d128fa",
     "photo-1578662996442-48f60103fc96",
-  ],
-  "summit-ridge-backpack": [
-    "photo-1547949003-979cc4e533c6",
-    "photo-1553062407-98eeb64c6a62",
-    "photo-1491637639811-60e2756cc1c7",
-    "photo-1581605405669-fcdf81165afa",
-  ],
-  "forge-gym-duffel": [
+  ] as const,
+  gym: [
+    // duffel / training vibe
     "photo-1581605405669-fcdf81165afa",
     "photo-1571907481-fbd2404e67ec",
     "photo-1547949003-979cc4e533c6",
     "photo-1553062407-98eeb64c6a62",
-  ],
-  "ivory-executive-briefcase": [
-    "photo-1627123424574-10b995aabc35",
-    "photo-1553062407-98eeb64c6a62",
-    "photo-1590874101-5c2440707502",
-    "photo-1594633312681-425c7b97ccd1",
-  ],
-  "phantom-mini-crossbody": [
-    "photo-1590874101-5c2440707502",
-    "photo-1548036328-c9fa89d128fa",
-    "photo-1594633312681-425c7b97ccd1",
-    "photo-1578662996442-48f60103fc96",
-  ],
-  "nomad-camera-pack": [
+  ] as const,
+  camera: [
+    // camera pack / photography vibe
     "photo-1516035069371-29a1b244cc32",
     "photo-1547949003-979cc4e533c6",
     "photo-1553062407-98eeb64c6a62",
     "photo-1491637639811-60e2756cc1c7",
-  ],
-  "lux-commuter-tote": [
-    "photo-1594633312681-425c7b97ccd1",
-    "photo-1590874101-5c2440707502",
-    "photo-1627123424574-10b995aabc35",
-    "photo-1548036328-c9fa89d128fa",
-  ],
-  "heritage-rolltop": [
-    "photo-1491637639811-60e2756cc1c7",
-    "photo-1547949003-979cc4e533c6",
-    "photo-1578662996442-48f60103fc96",
-    "photo-1553062407-98eeb64c6a62",
-  ],
-  "carbon-slim-wallet": [
+  ] as const,
+  wallet: [
+    // wallet / accessories
     "photo-1564422170194-896b89128c79",
     "photo-1627123424574-10b995aabc35",
     "photo-1590874101-5c2440707502",
-  ],
+  ] as const,
+} as const;
+
+const BAG_PHOTOS: Record<string, readonly string[]> = {
+  // Travel
+  "obsidian-transit-pro": POOLS.travel,
+  "atlas-weekender": POOLS.travel,
+  "summit-ridge-backpack": POOLS.travel,
+  "heritage-rolltop": POOLS.travel,
+
+  // Office
+  "neural-laptop-folio": POOLS.office,
+  "ivory-executive-briefcase": POOLS.office,
+  "lux-commuter-tote": POOLS.office,
+
+  // Fashion
+  "meridian-tote": POOLS.fashion,
+  "phantom-mini-crossbody": POOLS.fashion,
+
+  // Gym
+  "forge-gym-duffel": POOLS.gym,
+
+  // Specialty
+  "nomad-camera-pack": POOLS.camera,
+  "carbon-slim-wallet": POOLS.wallet,
 };
 
 /** Default travel/backpack set when slug is unknown */
-const DEFAULT_BAG_PHOTOS = [
-  "photo-1553062407-98eeb64c6a62",
-  "photo-1547949003-979cc4e533c6",
-  "photo-1590874101-5c2440707502",
-  "photo-1491637639811-60e2756cc1c7",
-] as const;
+const DEFAULT_BAG_PHOTOS = POOLS.travel;
 
 /** Category hero images for shop/marketing */
 export const CATEGORY_BAG_IMAGES: Record<string, string> = {
-  Travel:  "photo-1553062407-98eeb64c6a62",
-  Office:  "photo-1627123424574-10b995aabc35",
-  Fashion: "photo-1594633312681-425c7b97ccd1",
-  Gym:     "photo-1581605405669-fcdf81165afa",
+  Travel: POOLS.travel[0],
+  Office: POOLS.office[0],
+  Fashion: POOLS.fashion[0],
+  Gym: POOLS.gym[0],
 };
 
 export function unsplashBagUrl(
