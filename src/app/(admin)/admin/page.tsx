@@ -263,7 +263,7 @@ function ProductForm({ initial, onSave, onCancel }: ProductFormProps) {
   const [name,          setName]          = useState(initial?.name ?? "");
   const [price,         setPrice]         = useState(initial?.price ? String(initial.price) : "");
   const [originalPrice, setOriginalPrice] = useState(initial?.originalPrice ? String(initial.originalPrice) : "");
-  const [category,      setCategory]      = useState<string>(initial?.category ?? "Travel");
+  const [category,      setCategory]      = useState<string>(initial?.category ?? "Travel Bags");
   const [material,      setMaterial]      = useState(initial?.material ?? "");
   const [color,         setColor]         = useState(initial?.color ?? "");
   const [size,          setSize]          = useState<string>(initial?.size ?? "Medium");
@@ -445,7 +445,7 @@ function ProductForm({ initial, onSave, onCancel }: ProductFormProps) {
                 label="Category"
                 value={category}
                 onChange={setCategory}
-                options={["Travel","Office","Fashion","Gym"]}
+                options={["Travel Bags","Office Bags","Gym Bags","Fashion Bags","Ladies Bags","Backpacks","Laptop Bags"]}
               />
               <FormSelect
                 label="Size"
@@ -975,10 +975,13 @@ function AdminShell({ onLogout }: { onLogout: () => void }) {
                   Sales by Category
                 </h3>
                 {[
-                  ["Travel",42,"#B8860B"],
-                  ["Office",28,"#2563EB"],
-                  ["Fashion",18,"#7C3AED"],
-                  ["Gym",12,"#059669"],
+                  ["Travel Bags",32,"#B8860B"],
+                  ["Office Bags",22,"#2563EB"],
+                  ["Ladies Bags",18,"#E879A0"],
+                  ["Backpacks",14,"#7C3AED"],
+                  ["Laptop Bags",8,"#059669"],
+                  ["Gym Bags",4,"#F59E0B"],
+                  ["Fashion Bags",2,"#EC4899"],
                 ].map(([cat,pct,color]) => (
                   <div key={String(cat)} className="mb-5">
                     <div className="flex justify-between text-sm mb-1.5">

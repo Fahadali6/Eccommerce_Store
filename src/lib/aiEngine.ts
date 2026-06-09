@@ -2,16 +2,18 @@ import { PRODUCTS } from "./data";
 import type { Product } from "@/types";
 
 const SYNONYMS: Record<string, string[]> = {
-  bag:       ["backpack","tote","briefcase","duffel","folio"],
-  work:      ["office","professional","commuter","business"],
-  travel:    ["transit","weekender","journey","trip"],
-  gym:       ["sport","training","fitness","workout","forge"],
-  small:     ["mini","slim","compact","crossbody"],
-  laptop:    ["computer","notebook","macbook"],
-  leather:   ["full-grain","pebbled","vegan","italian"],
-  waterproof:["water-resistant","weatherproof","rain"],
-  cheap:     ["affordable","budget","value"],
-  premium:   ["luxury","high-end","quality"],
+  bag:        ["backpack","tote","briefcase","duffel","folio","clutch","satchel","hobo"],
+  work:       ["office","professional","commuter","business","briefcase","executive"],
+  travel:     ["transit","weekender","journey","trip","luggage","duffel"],
+  gym:        ["sport","training","fitness","workout","duffel","athletic"],
+  laptop:     ["computer","notebook","macbook","folio","sleeve","tech"],
+  ladies:     ["women","woman","female","handbag","purse","clutch","quilted"],
+  backpack:   ["rucksack","pack","daypack","hiking","commuter"],
+  fashion:    ["style","trendy","crossbody","shoulder","chic"],
+  leather:    ["full-grain","pebbled","vegan","italian","genuine","suede"],
+  waterproof: ["water-resistant","weatherproof","rain","ripstop"],
+  cheap:      ["affordable","budget","value","economical"],
+  premium:    ["luxury","high-end","quality","designer","exclusive"],
 };
 
 export function smartSearch(query: string): Product[] {

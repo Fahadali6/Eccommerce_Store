@@ -90,7 +90,9 @@ function ShopInner() {
     const cat  = params.get("cat");
     const sort = params.get("sort") as SortKey|null;
     if (cat || sort) {
-      setFilters(prev => ({ ...prev, category: cat ? [cat] : prev.category, sort: sort ?? prev.sort }));
+      // Decode URL-encoded category names like "Travel%20Bags" → "Travel Bags"
+      const decoded = cat ? decodeURIComponent(cat) : null;
+      setFilters(prev => ({ ...prev, category: decoded ? [decoded] : prev.category, sort: sort ?? prev.sort }));
     }
   }, [params]);
 

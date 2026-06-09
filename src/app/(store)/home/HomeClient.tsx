@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   ArrowRight, Shield, Truck, RotateCcw, Star,
@@ -10,6 +11,7 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { HeroSlider } from "@/components/ui/HeroSlider";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS } from "@/lib/data";
 import { getRecommendations } from "@/lib/aiEngine";
+import { getProductImageUrl } from "@/lib/utils";
 import { getLocalProductImages } from "@/lib/imageStorage";
 import type { Product } from "@/types";
 
@@ -167,43 +169,39 @@ export function HomeClient() {
           <div className="section-heading">
             <p className="label mb-3">Collections</p>
             <h2>Shop by Category</h2>
-            <p>Discover our curated collections crafted for every lifestyle</p>
+            <p>7 premium bag categories crafted for every lifestyle and occasion</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {CATEGORIES.map(cat => (
-              <Link key={cat.id} href={`/shop?cat=${cat.name}`}
-                className="group relative overflow-hidden rounded-3xl transition-all duration-350"
-                style={{
-                  background: "var(--bg-card)",
-                  border: "1px solid var(--border)",
-                  boxShadow: "var(--shadow-sm)",
-                }}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            {CATEGORIES.map((cat) => (
+              <Link key={cat.id} href={`/shop?cat=${encodeURIComponent(cat.name)}`}
+                className="group relative overflow-hidden rounded-2xl transition-all duration-300"
+                style={{ aspectRatio:"3/4", boxShadow:"var(--shadow-sm)" }}
                 onMouseEnter={e => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(-5px)";
                   (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-lg)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(184,134,11,0.3)";
                 }}
                 onMouseLeave={e => {
                   (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                   (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
                 }}
               >
-                <div className="flex flex-col items-center text-center p-8 gap-4">
-                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl transition-transform duration-300 group-hover:scale-110"
-                    style={{ background: "var(--gold-pale)" }}>
-                    {cat.emoji}
-                  </div>
-                  <div>
-                    <h3 className="font-bold font-serif text-lg mb-1" style={{ color: "var(--text)" }}>
-                      {cat.name}
-                    </h3>
-                    <p className="text-xs mb-3" style={{ color: "var(--text-muted)" }}>{cat.desc}</p>
-                    <span className="text-xs font-bold flex items-center justify-center gap-1 transition-all"
-                      style={{ color: "var(--gold)" }}>
-                      Explore <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </div>
+                {/* Background image */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                {/* Dark gradient overlay */}
+                <div className="absolute inset-0"
+                  style={{ background:"linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)" }} />
+                {/* Content */}
+                <div className="absolute inset-x-0 bottom-0 p-3 text-center">
+                  <div className="text-xl mb-1">{cat.emoji}</div>
+                  <h3 className="text-white font-bold text-xs leading-tight font-serif">{cat.name}</h3>
+                  <p className="text-[9px] mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ color:"rgba(255,255,255,0.7)" }}>{cat.desc}</p>
                 </div>
               </Link>
             ))}
@@ -217,7 +215,7 @@ export function HomeClient() {
           <div className="flex justify-between items-end mb-12">
             <div>
               <p className="label mb-2">{isPersonalized ? "✦ AI Curated" : "✦ Featured"}</p>
-              <h2 className="text-4xl font-black font-serif">{isPersonalized ? "Picked For You" : "Editor's Picks"}</h2>
+              <h2 className="text-4xl font-black font-serif">{isPersonalized ? "Picked For You" : "Editor&apos;s Picks"}</h2>
               {isPersonalized && <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>Based on your browsing history</p>}
             </div>
             <Link href="/shop" className="btn-outline btn-sm flex items-center gap-1.5">
@@ -282,7 +280,7 @@ export function HomeClient() {
               <p className="label mb-3">Why VAULTA</p>
               <h2 className="text-4xl font-black font-serif mb-6">Built Different.<br /><span style={{ color: "var(--gold)" }}>Built to Last.</span></h2>
               <p className="text-lg leading-relaxed mb-10" style={{ color: "var(--text-sec)" }}>
-                Every VAULTA bag is the result of obsessive craftsmanship, premium materials, and decades of design experience. We do not cut corners — ever.
+                Every VAULTA bag is the result of obsessive craftsmanship, premium materials, and decades of design experience. We don&apos;t cut corners — ever.
               </p>
               <div className="space-y-5">
                 {[
@@ -326,7 +324,7 @@ export function HomeClient() {
                 <div className="text-center">
                   <p className="text-4xl font-black font-serif" style={{ color: "var(--gold)" }}>4.9</p>
                   <div className="flex justify-center gap-0.5 my-1">
-                    {Array.from({ length: 5 }).map((_, i) => <Star key={i} size={14} className="fill-amber-400 text-amber-400" />)}
+                    {Array.from({ length: 5 }).map((_, _i) => <Star key={_i} size={14} className="fill-amber-400 text-amber-400" />)}
                   </div>
                   <p className="text-xs" style={{ color: "var(--text-muted)" }}>Overall</p>
                 </div>

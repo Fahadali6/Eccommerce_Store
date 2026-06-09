@@ -40,12 +40,6 @@ const POOLS = {
     "photo-1553062407-98eeb64c6a62",
     "photo-1491637639811-60e2756cc1c7",
   ] as const,
-  wallet: [
-    // wallet / accessories
-    "photo-1564422170194-896b89128c79",
-    "photo-1627123424574-10b995aabc35",
-    "photo-1590874101-5c2440707502",
-  ] as const,
 } as const;
 
 const BAG_PHOTOS: Record<string, readonly string[]> = {
@@ -69,7 +63,6 @@ const BAG_PHOTOS: Record<string, readonly string[]> = {
 
   // Specialty
   "nomad-camera-pack": POOLS.camera,
-  "carbon-slim-wallet": POOLS.wallet,
 };
 
 /** Default travel/backpack set when slug is unknown */
@@ -77,10 +70,13 @@ const DEFAULT_BAG_PHOTOS = POOLS.travel;
 
 /** Category hero images for shop/marketing */
 export const CATEGORY_BAG_IMAGES: Record<string, string> = {
-  Travel: POOLS.travel[0],
-  Office: POOLS.office[0],
-  Fashion: POOLS.fashion[0],
-  Gym: POOLS.gym[0],
+  "Travel Bags": POOLS.travel[0],
+  "Office Bags": POOLS.office[0],
+  "Gym Bags": POOLS.gym[0],
+  "Fashion Bags": POOLS.fashion[0],
+  "Ladies Bags": POOLS.fashion[0],
+  Backpacks: POOLS.travel[0],
+  "Laptop Bags": POOLS.office[0],
 };
 
 export function unsplashBagUrl(

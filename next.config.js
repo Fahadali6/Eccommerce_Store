@@ -9,21 +9,15 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "picsum.photos",
+        hostname: "images.unsplash.com",
       },
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
+        hostname: "picsum.photos",
       },
     ],
   },
   serverExternalPackages: ["@supabase/supabase-js"],
-};
-
-module.exports = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 module.exports = nextConfig;

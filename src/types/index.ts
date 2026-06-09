@@ -1,13 +1,21 @@
-export type Category    = "Travel" | "Office" | "Fashion" | "Gym";
+export type Category =
+  | "Travel Bags"
+  | "Office Bags"
+  | "Gym Bags"
+  | "Fashion Bags"
+  | "Ladies Bags"
+  | "Backpacks"
+  | "Laptop Bags";
+
 export type Size        = "Small" | "Medium" | "Large";
 export type OrderStatus = "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
 
 export interface ProductImage {
-  id:        string;   // uuid
-  url:       string;   // full public URL
-  path:      string;   // storage path e.g. "products/abc123.jpg"
+  id:        string;
+  url:       string;
+  path:      string;
   isPrimary: boolean;
-  order:     number;   // 0 = first in gallery
+  order:     number;
 }
 
 export interface Product {
@@ -29,8 +37,8 @@ export interface Product {
   trending:      boolean;
   featured:      boolean;
   description:   string;
-  imageId:       number;          // fallback picsum seed (used when no custom images)
-  images:        ProductImage[];  // uploaded images (empty = use picsum fallback)
+  imageId:       number;
+  images:        ProductImage[];
 }
 
 export interface CartItem extends Product { qty: number; }
@@ -45,7 +53,6 @@ export interface Order {
   items:         { name: string; qty: number; price: number }[];
 }
 
-// ── Image Upload ──────────────────────────────────────────────
 export interface UploadResult {
   success: boolean;
   image?:  ProductImage;
@@ -53,11 +60,11 @@ export interface UploadResult {
 }
 
 export const IMAGE_CONSTRAINTS = {
-  maxSizeBytes:   5 * 1024 * 1024,   // 5 MB
-  maxSizeMB:      5,
-  allowedTypes:   ["image/jpeg", "image/png", "image/webp", "image/avif"] as string[],
-  allowedExts:    [".jpg", ".jpeg", ".png", ".webp", ".avif"],
-  maxPerProduct:  8,
-  thumbSize:      400,
-  displaySize:    800,
+  maxSizeBytes:  5 * 1024 * 1024,
+  maxSizeMB:     5,
+  allowedTypes:  ["image/jpeg","image/png","image/webp","image/avif"] as string[],
+  allowedExts:   [".jpg",".jpeg",".png",".webp",".avif"],
+  maxPerProduct: 8,
+  thumbSize:     400,
+  displaySize:   800,
 } as const;

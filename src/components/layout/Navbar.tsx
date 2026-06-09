@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   ShoppingBag, Heart, Search, Menu, X,
@@ -9,7 +8,7 @@ import {
 } from "lucide-react";
 import { useStore } from "@/context/store";
 import { smartSearch } from "@/lib/aiEngine";
-import { cn, getProductImageUrl } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import type { Product } from "@/types";
 
 const NAV_LINKS = [
@@ -20,11 +19,14 @@ const NAV_LINKS = [
 ];
 
 const SHOP_CATS = [
-  { label: "Travel Bags",  href: "/shop?cat=Travel",  emoji: "✈️" },
-  { label: "Office Bags",  href: "/shop?cat=Office",  emoji: "💼" },
-  { label: "Fashion Bags", href: "/shop?cat=Fashion", emoji: "👜" },
-  { label: "Gym Bags",     href: "/shop?cat=Gym",     emoji: "🏋️" },
-  { label: "All Products", href: "/shop",             emoji: "🛍️" },
+  { label: "Travel Bags",  href: "/shop?cat=Travel%20Bags",  emoji: "🧳" },
+  { label: "Office Bags",  href: "/shop?cat=Office%20Bags",  emoji: "💼" },
+  { label: "Gym Bags",     href: "/shop?cat=Gym%20Bags",     emoji: "🏋️" },
+  { label: "Fashion Bags", href: "/shop?cat=Fashion%20Bags", emoji: "👜" },
+  { label: "Ladies Bags",  href: "/shop?cat=Ladies%20Bags",  emoji: "👛" },
+  { label: "Backpacks",    href: "/shop?cat=Backpacks",      emoji: "🎒" },
+  { label: "Laptop Bags",  href: "/shop?cat=Laptop%20Bags",  emoji: "💻" },
+  { label: "All Bags",     href: "/shop",                    emoji: "🛍️" },
 ];
 
 export function Navbar() {
@@ -168,17 +170,37 @@ export function Navbar() {
               {/* Search */}
               <div ref={searchRef} className="relative">
                 {searchOpen ? (
-                  <div className="flex items-center gap-2 rounded-xl px-3.5 py-2 transition-all"
-                    style={{
-                      width:"280px", background:"var(--bg-input)",
-                      border:"1.5px solid var(--gold)",
-                      boxShadow:"0 0 0 3px rgba(184,134,11,0.1)",
-                    }}>
+                  // <div className="flex items-center gap-2 rounded-xl px-3.5 py-2 transition-all"
+                  //   style={{
+                  //     width:"280px", background:"var(--bg-input)",
+                  //     border:"1.5px solid var(--gold)",
+                  //     boxShadow:"0 0 0 3px rgba(184,134,11,0.1)",
+                  //   }}>
+                  <div
+                   className="flex items-center gap-2 px-3.5 py-1 rounded-full transition-all"
+                   style={{
+                   width: "280px",
+                   background: "transparent",
+                   border: "1px solid var(--gold)",
+                   }}>
                     <Search size={15} style={{ color:"var(--text-muted)", flexShrink:0 }} />
-                    <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
+                    {/* <input ref={inputRef} value={query} onChange={e => setQuery(e.target.value)}
                       placeholder="Search bags, materials..."
-                      className="bg-transparent outline-none text-sm flex-1 font-sans"
-                      style={{ color:"var(--text)" }} />
+                      className="bg-transparent outline-none text-sm flex-1 font-sans border-none"
+                      style={{ color:"var(--text)",      
+                               boxShadow: "none",
+                               background: "transparent", }} /> */}
+                     <input
+                       ref={inputRef}
+                       value={query}
+                       onChange={(e) => setQuery(e.target.value)}
+                       placeholder="Search bags, materials..."
+                       className="flex-1 bg-transparent border-0 outline-none ring-0 focus:outline-none focus:ring-0"
+                       style={{
+                             color: "var(--text)",
+                              border: "none",
+                              outline: "none",
+                             boxShadow: "none", }}/>          
                     <button onClick={() => { setSearchOpen(false); setQuery(""); }}
                       style={{ color:"var(--text-muted)" }} className="hover:opacity-70 transition-opacity">
                       <X size={15} />
@@ -192,11 +214,11 @@ export function Navbar() {
 
                 {/* Search results */}
                 {results.length > 0 && searchOpen && (
-                  <div className="absolute top-full mt-2 left-0 w-80 card-flat rounded-2xl overflow-hidden z-50"
+                  <div className="absolute top-full mt-2 left-0 w-80 card-flat overflow-hidden z-50"
                     style={{ boxShadow:"var(--shadow-xl)", animation:"fadeUp 0.2s ease both" }}>
                     <div className="px-4 py-2.5 border-b" style={{ borderColor:"var(--border)" }}>
                       <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color:"var(--text-muted)" }}>
-                        {results.length} results for &quot;{query}&quot;
+                        {results.length} results for &ldquo;{query}&rdquo;
                       </p>
                     </div>
                     {results.map(p => (
@@ -207,17 +229,9 @@ export function Navbar() {
                         onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)"}
                         onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}
                       >
-                        <div className="relative w-11 h-11 rounded-xl overflow-hidden flex-shrink-0"
-                          style={{ background: "var(--bg-muted)" }}>
-                          <Image
-                            src={getProductImageUrl(p, 0, 96, 96)}
-                            alt={p.name}
-                            fill
-                            className="object-cover"
-                            sizes="44px"
-                            unoptimized={getProductImageUrl(p, 0, 96, 96).startsWith("data:")}
-                          />
-                        </div>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={`https://picsum.photos/seed/vaulta${p.imageId}/48/48`} alt={p.name}
+                          className="w-11 h-11 rounded-xl object-cover flex-shrink-0" loading="lazy" />
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-semibold truncate" style={{ color:"var(--text)" }}>{p.name}</p>
                           <div className="flex items-center gap-2">
@@ -231,7 +245,7 @@ export function Navbar() {
                       onClick={() => { setSearchOpen(false); setQuery(""); }}
                       className="flex items-center justify-center gap-2 px-4 py-3 text-xs font-semibold transition-colors"
                       style={{ color:"var(--gold)", background:"var(--gold-pale)" }}>
-                      View all results for &quot;{query}&quot; →
+                      View all results for &ldquo;{query}&rdquo; →
                     </Link>
                   </div>
                 )}
