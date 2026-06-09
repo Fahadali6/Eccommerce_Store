@@ -1,4 +1,4 @@
-import type { Product, Order, OrderStatus } from "@/types";
+import type { Product, OrderStatus } from "@/types";
 
 const ni = [] as Product["images"]; // no images (uses Unsplash fallback)
 

@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   ArrowRight, Shield, Truck, RotateCcw, Star,
@@ -11,7 +10,6 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { HeroSlider } from "@/components/ui/HeroSlider";
 import { PRODUCTS, CATEGORIES, TESTIMONIALS } from "@/lib/data";
 import { getRecommendations } from "@/lib/aiEngine";
-import { getProductImageUrl } from "@/lib/utils";
 import { getLocalProductImages } from "@/lib/imageStorage";
 import type { Product } from "@/types";
 

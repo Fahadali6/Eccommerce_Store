@@ -105,7 +105,7 @@ export function Footer() {
             </Link>
 
             <p className="text-sm leading-relaxed mb-6" style={{ color: "var(--text-sec)", maxWidth: "300px" }}>
-              Premium bags engineered for extraordinary lives. Crafted from the world's finest materials with a lifetime warranty on every product.
+              Premium bags engineered for extraordinary lives. Crafted from the worlds finest materials with a lifetime warranty on every product.
             </p>
 
             {/* Contact info */}
